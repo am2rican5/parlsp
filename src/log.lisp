@@ -1,4 +1,4 @@
-(in-package #:common-lisp-lsp)
+(in-package #:parlsp)
 
 (defvar *log-stream* *error-output*
   "Stream where the server writes diagnostic logs. Never stdout, since
@@ -16,7 +16,7 @@ stdout carries LSP traffic in --stdio mode.")
 (defun log-message (level fmt &rest args)
   (when (>= (%level-rank level) (%level-rank *log-level*))
     (let ((*print-pretty* nil))
-      (format *log-stream* "[cl-lsp ~A] " (string-upcase (symbol-name level)))
+      (format *log-stream* "[parlsp ~A] " (string-upcase (symbol-name level)))
       (apply #'format *log-stream* fmt args)
       (terpri *log-stream*)
       (finish-output *log-stream*))))

@@ -1,4 +1,4 @@
-(in-package #:common-lisp-lsp)
+(in-package #:parlsp)
 
 ;;;; CLI entry point. Supports:
 ;;;;   --stdio                Use stdio transport (default).
@@ -11,10 +11,10 @@
 (defparameter +version+ "0.1.0")
 
 (defparameter +help-text+
-  "common-lisp-lsp — Language Server for Common Lisp
+  "parlsp — Language Server for Common Lisp
 
 USAGE:
-  cl-lsp [OPTIONS]
+  parlsp [OPTIONS]
 
 OPTIONS:
   --stdio                  Communicate over stdin/stdout (default).
@@ -100,16 +100,16 @@ implementation's process arguments are used."
              (opts (parse-args args)))
         (case (getf opts :mode)
           (:help    (princ +help-text+) (terpri) (exit-with-code 0))
-          (:version (format t "common-lisp-lsp ~A~%" +version+)
+          (:version (format t "parlsp ~A~%" +version+)
                     (exit-with-code 0))
           (otherwise
            (configure-logging (getf opts :log-level) (getf opts :log-file))
-           (log-info "Starting cl-lsp ~A (mode=~A)" +version+ (getf opts :mode))
+           (log-info "Starting parlsp ~A (mode=~A)" +version+ (getf opts :mode))
            (let ((code (ecase (getf opts :mode)
                          (:stdio (run-stdio))
                          (:tcp (run-tcp (getf opts :host)
                                         (getf opts :port))))))
              (exit-with-code (or code 0))))))
     (error (e)
-      (format *error-output* "cl-lsp: ~A~%" e)
+      (format *error-output* "parlsp: ~A~%" e)
       (exit-with-code 2))))

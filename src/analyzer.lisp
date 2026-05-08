@@ -1,4 +1,4 @@
-(in-package #:common-lisp-lsp)
+(in-package #:parlsp)
 
 ;;;; Lightweight static analysis of a Common Lisp source string.
 ;;;; We never EVAL user code. We use the standard reader against an
@@ -320,7 +320,7 @@ parentheses and reader errors."
                                 :start (json-obj :line line :character col)
                                 :end   (json-obj :line line :character (1+ col)))
                         :severity 1
-                        :source "cl-lsp"
+                        :source "parlsp"
                         :message "Unterminated string literal")
                        diags))
                (setf i j)))
@@ -335,7 +335,7 @@ parentheses and reader errors."
                                :start (json-obj :line line :character col)
                                :end   (json-obj :line line :character (1+ col)))
                        :severity 1
-                       :source "cl-lsp"
+                       :source "parlsp"
                        :message "Unmatched closing parenthesis")
                       diags))
                (t (pop paren-stack)))
@@ -349,7 +349,7 @@ parentheses and reader errors."
                        :start (json-obj :line line :character col)
                        :end   (json-obj :line line :character (1+ col)))
                :severity 1
-               :source "cl-lsp"
+               :source "parlsp"
                :message "Unmatched opening parenthesis")
               diags)))
     (nreverse diags)))

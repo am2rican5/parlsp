@@ -1,4 +1,4 @@
-(in-package #:common-lisp-lsp)
+(in-package #:parlsp)
 
 ;;;; JSON helpers wrapping cl-json with LSP-friendly conventions.
 ;;;;

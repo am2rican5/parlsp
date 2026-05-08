@@ -1,4 +1,4 @@
-(in-package #:common-lisp-lsp)
+(in-package #:parlsp)
 
 ;;;; Server runtime: state, the read/dispatch/write loop, and stdio/tcp
 ;;;; transports.

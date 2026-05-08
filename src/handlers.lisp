@@ -1,4 +1,4 @@
-(in-package #:common-lisp-lsp)
+(in-package #:parlsp)
 
 ;;;; LSP method handlers. Each handler is keyed by the JSON-RPC method
 ;;;; name and receives (SERVER PARAMS) where PARAMS is the decoded
@@ -19,7 +19,7 @@
    :workspace-symbol-provider :false))
 
 (defun server-info ()
-  (json-obj :name "common-lisp-lsp" :version "0.1.0"))
+  (json-obj :name "parlsp" :version "0.1.0"))
 
 ;;; ---------------------------------------------------------------------------
 ;;; Lifecycle

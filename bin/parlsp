@@ -1,0 +1,25 @@
+#!/usr/bin/env sh
+#
+# Launcher for the parlsp server.
+#
+# Loads the system from source via SBCL and forwards all CLI flags to
+# PARLSP:MAIN. Use --stdio (default) to speak LSP over stdin/stdout.
+#
+# To build a standalone binary instead:
+#   sbcl --non-interactive \
+#        --eval '(asdf:load-system :parlsp)' \
+#        --eval '(asdf:make :parlsp)'
+# The binary will be written to dist/parlsp.
+
+set -e
+
+HERE="$(cd "$(dirname "$0")/.." && pwd)"
+
+# Make sure ASDF can find this system without manual registration.
+export CL_SOURCE_REGISTRY="${HERE}//:${CL_SOURCE_REGISTRY:-}"
+
+exec sbcl --noinform --disable-debugger --no-userinit --no-sysinit \
+    --load "${HOME}/quicklisp/setup.lisp" \
+    --eval "(let ((*standard-output* (make-broadcast-stream))) (ql:quickload :parlsp :silent t))" \
+    --eval "(parlsp:main)" \
+    --end-toplevel-options "$@"

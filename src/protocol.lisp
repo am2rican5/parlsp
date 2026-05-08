@@ -1,4 +1,4 @@
-(in-package #:common-lisp-lsp)
+(in-package #:parlsp)
 
 ;;;; JSON-RPC 2.0 framing on top of the LSP base protocol.
 ;;;;

@@ -29,3 +29,6 @@
 # Logs and build artifacts
 *.log
 /dist/
+
+# In case asdf:make is configured to overwrite the launcher
+/bin/parlsp.bin

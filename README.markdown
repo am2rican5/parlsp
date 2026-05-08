@@ -1,4 +1,4 @@
-# common-lisp-lsp
+# parlsp
 
 A Language Server Protocol implementation for Common Lisp, written in Common Lisp.
 
@@ -23,22 +23,22 @@ The server never `EVAL`s user code — analysis is done with a hand-rolled scann
 ## Usage
 
 ```sh
-./bin/cl-lsp --stdio                    # default; speak LSP on stdin/stdout
-./bin/cl-lsp --tcp 127.0.0.1:5050       # listen on TCP for one client
-./bin/cl-lsp --log-level debug          # crank up logging (writes to stderr)
-./bin/cl-lsp --log-file /tmp/lsp.log    # log to a file instead of stderr
-./bin/cl-lsp --help
-./bin/cl-lsp --version
+./bin/parlsp --stdio                    # default; speak LSP on stdin/stdout
+./bin/parlsp --tcp 127.0.0.1:5050       # listen on TCP for one client
+./bin/parlsp --log-level debug          # crank up logging (writes to stderr)
+./bin/parlsp --log-file /tmp/lsp.log    # log to a file instead of stderr
+./bin/parlsp --help
+./bin/parlsp --version
 ```
 
-The launcher loads the system via Quicklisp and dispatches to `common-lisp-lsp:main`.
+The launcher loads the system via Quicklisp and dispatches to `parlsp:main`.
 
 ### Editor configuration (Neovim example)
 
 ```lua
 vim.lsp.start({
-  name = "cl-lsp",
-  cmd = { "/path/to/common-lisp-lsp/bin/cl-lsp", "--stdio" },
+  name = "parlsp",
+  cmd = { "/path/to/parlsp/bin/parlsp", "--stdio" },
   filetypes = { "lisp" },
   root_dir = vim.fs.dirname(vim.fs.find({ ".git", "*.asd" }, { upward = true })[1]),
 })
@@ -48,16 +48,16 @@ vim.lsp.start({
 
 ```sh
 sbcl --non-interactive \
-     --eval '(ql:quickload :common-lisp-lsp)' \
-     --eval '(asdf:make :common-lisp-lsp)'
-# → bin/cl-lsp (a self-contained SBCL core image)
+     --eval '(ql:quickload :parlsp)' \
+     --eval '(asdf:make :parlsp)'
+# → bin/parlsp (a self-contained SBCL core image)
 ```
 
 ## Development
 
 ```sh
-sbcl --eval '(ql:quickload :common-lisp-lsp/tests)' \
-     --eval '(asdf:test-system :common-lisp-lsp)'
+sbcl --eval '(ql:quickload :parlsp/tests)' \
+     --eval '(asdf:test-system :parlsp)'
 ```
 
 Tests cover JSON serialization, JSON-RPC framing, document model, analyzer (top-level scan, symbol-at-point, diagnostics) and LSP method handlers (`initialize`, `didOpen`, `completion`, `hover`, `definition`, `documentSymbol`).
@@ -65,7 +65,7 @@ Tests cover JSON serialization, JSON-RPC framing, document model, analyzer (top-
 ## Project layout
 
 ```
-common-lisp-lsp.asd
+parlsp.asd
 src/
   package.lisp     — package definition and exports
   json.lisp        — JSON encode/decode helpers (kebab-case keyword → camelCase JSON)
@@ -77,7 +77,7 @@ src/
   server.lisp      — read/dispatch/write loop and stdio/tcp transports
   main.lisp        — CLI argument parsing and entry point
 bin/
-  cl-lsp           — shell launcher
+  parlsp           — shell launcher
 tests/             — Rove suites
 ```
 

@@ -1,4 +1,4 @@
-(in-package #:common-lisp-lsp)
+(in-package #:parlsp)
 
 ;;;; In-memory document model. LSP positions are zero-based (line, character).
 ;;;; We maintain the document text plus a cached vector of line-start byte

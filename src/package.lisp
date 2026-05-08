@@ -1,8 +1,7 @@
 (eval-when (:compile-toplevel :load-toplevel :execute)
   #+sbcl (require :sb-introspect))
 
-(uiop:define-package #:common-lisp-lsp
-  (:nicknames #:cl-lsp)
+(uiop:define-package #:parlsp
   (:use #:cl)
   (:export
    ;; entry points

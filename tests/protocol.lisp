@@ -1,4 +1,4 @@
-(in-package #:common-lisp-lsp/tests/main)
+(in-package #:parlsp/tests/main)
 
 (defclass byte-vector-input-stream
     (trivial-gray-streams:fundamental-binary-input-stream)
@@ -48,13 +48,13 @@
 
 (defun make-input-from-string (s)
   (make-instance 'byte-vector-input-stream
-                 :buffer (common-lisp-lsp::utf8-encode s)))
+                 :buffer (parlsp::utf8-encode s)))
 
 (defun make-output ()
   (make-instance 'byte-vector-output-stream))
 
 (defun output-string (out)
-  (common-lisp-lsp::utf8-decode (coerce (bvo-bytes out)
+  (parlsp::utf8-decode (coerce (bvo-bytes out)
                                         '(simple-array (unsigned-byte 8) (*)))))
 
 (deftest read-message-parses-headers-and-body
@@ -66,16 +66,16 @@
                         #.(coerce '(#\Return #\Newline) 'string)
                         body))
            (in (make-input-from-string msg))
-           (decoded (common-lisp-lsp:read-message in)))
-      (ok (equal "2.0" (common-lisp-lsp::json-get decoded "jsonrpc")))
-      (ok (= 1 (common-lisp-lsp::json-get decoded "id")))
-      (ok (equal "initialize" (common-lisp-lsp::json-get decoded "method"))))))
+           (decoded (parlsp:read-message in)))
+      (ok (equal "2.0" (parlsp::json-get decoded "jsonrpc")))
+      (ok (= 1 (parlsp::json-get decoded "id")))
+      (ok (equal "initialize" (parlsp::json-get decoded "method"))))))
 
 (deftest write-message-frames-correctly
   (testing "Content-Length matches UTF-8 byte length"
     (let* ((out (make-output))
-           (obj (common-lisp-lsp::json-obj :jsonrpc "2.0" :id 7 :result :null)))
-      (common-lisp-lsp:write-message out obj)
+           (obj (parlsp::json-obj :jsonrpc "2.0" :id 7 :result :null)))
+      (parlsp:write-message out obj)
       (let* ((wire (output-string out))
              (cl-pos (search "Content-Length:" wire))
              (eol (position #\Return wire))
@@ -86,27 +86,27 @@
              (separator (search (coerce '(#\Return #\Newline #\Return #\Newline) 'string)
                                 wire))
              (body (subseq wire (+ separator 4))))
-        (ok (= n (common-lisp-lsp::utf8-byte-length body)))
+        (ok (= n (parlsp::utf8-byte-length body)))
         (ok (search "\"id\":7" body))))))
 
 (deftest dispatch-unknown-method-returns-method-not-found
   (testing "unknown request gets -32601"
-    (let* ((server (common-lisp-lsp:make-server
+    (let* ((server (parlsp:make-server
                     :input nil
                     :output (make-output)))
-           (msg (common-lisp-lsp::json-obj
+           (msg (parlsp::json-obj
                  :jsonrpc "2.0" :id 99 :method "no/such/method"))
-           (resp (common-lisp-lsp:dispatch server msg)))
-      (ok (= 99 (common-lisp-lsp::json-get resp "id")))
+           (resp (parlsp:dispatch server msg)))
+      (ok (= 99 (parlsp::json-get resp "id")))
       (ok (= -32601
-             (common-lisp-lsp::json-getf resp "error" "code"))))))
+             (parlsp::json-getf resp "error" "code"))))))
 
 (deftest dispatch-notification-returns-nil
   (testing "notifications produce no response"
-    (let ((server (common-lisp-lsp:make-server
+    (let ((server (parlsp:make-server
                    :input nil
                    :output (make-output))))
-      (ok (null (common-lisp-lsp:dispatch
+      (ok (null (parlsp:dispatch
                  server
-                 (common-lisp-lsp::json-obj
+                 (parlsp::json-obj
                   :jsonrpc "2.0" :method "no/such/method")))))))
