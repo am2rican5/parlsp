@@ -47,17 +47,18 @@ vim.lsp.start({
 ### Building a standalone binary
 
 ```sh
-sbcl --non-interactive \
-     --eval '(ql:quickload :parlsp)' \
-     --eval '(asdf:make :parlsp)'
-# → bin/parlsp (a self-contained SBCL core image)
+make build              # writes dist/parlsp (~50–100 MB SBCL core image)
+make install            # symlinks bin/parlsp into ~/bin (or PREFIX=/usr/local etc.)
 ```
 
 ## Development
 
 ```sh
-sbcl --eval '(ql:quickload :parlsp/tests)' \
-     --eval '(asdf:test-system :parlsp)'
+make            # run the Rove test suite (default target)
+make test       # same
+make repl       # SBCL REPL with the system loaded
+make clean      # remove dist/ and ASDF caches for this project
+make help       # list all targets
 ```
 
 Tests cover JSON serialization, JSON-RPC framing, document model, analyzer (top-level scan, symbol-at-point, diagnostics) and LSP method handlers (`initialize`, `didOpen`, `completion`, `hover`, `definition`, `documentSymbol`).
