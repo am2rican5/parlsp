@@ -1,0 +1,31 @@
+# Common Lisp compiled files
+*.abcl
+*.fasl
+*.dx32fsl
+*.dx64fsl
+*.lx32fsl
+*.lx64fsl
+*.x86f
+
+# Emacs/SLIME backup and lock files
+*~
+.#*
+
+# OS
+.DS_Store
+
+# ASDF / implementation caches
+.cache/
+.fasls/
+
+# SLIME / SLY history
+.slime-history.eld
+.sly-history.eld
+
+# Editor scratch
+*.swp
+*.swo
+
+# Logs and build artifacts
+*.log
+/dist/
