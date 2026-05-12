@@ -15,10 +15,29 @@ A Language Server Protocol implementation for Common Lisp, written in Common Lis
 
 The server never `EVAL`s user code — analysis is done with a hand-rolled scanner.
 
+## Install
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/am2rican5/parlsp/main/install.sh | sh
+```
+
+The script downloads the source, installs Quicklisp if missing, builds a standalone
+binary, and drops it at `~/.local/bin/parlsp`. Pass `--no-build` to install the
+launcher script instead (faster install, slower startup). Common knobs:
+
+| Variable / flag | Default | Purpose |
+|---|---|---|
+| `PARLSP_VERSION` / `--version` | `main` | Git ref to install |
+| `PARLSP_INSTALL_PATH` / `--prefix` | `~/.local/bin/parlsp` | Final binary path |
+| `PARLSP_SOURCE_DIR` | `~/.local/share/parlsp` | Source tree location |
+| `PARLSP_QUICKLISP_HOME` | `~/quicklisp` | Quicklisp directory |
+| `PARLSP_NO_BUILD` / `--no-build` | unset | Install launcher instead of binary |
+| `PARLSP_DEBUG=1` | unset | Verbose trace |
+
 ## Requirements
 
 - [SBCL](http://www.sbcl.org/) (other implementations may work but stdio binary streams currently use `sb-sys:make-fd-stream`).
-- [Quicklisp](https://www.quicklisp.org/) for resolving dependencies (`alexandria`, `bordeaux-threads`, `cl-json`, `cl-ppcre`).
+- [Quicklisp](https://www.quicklisp.org/) for resolving dependencies (`alexandria`, `bordeaux-threads`, `cl-json`, `cl-ppcre`). The installer above will set it up for you if missing.
 
 ## Usage
 
